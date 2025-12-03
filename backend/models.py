@@ -50,3 +50,11 @@ class Prediction(Base):
     probability = Column(Float)
     risk_level = Column(String(20))
     timestamp = Column(DateTime, default=datetime.utcnow)
+    
+class DiseaseSNP(Base):
+    __tablename__ = "disease_snp"
+
+    id = Column(Integer, primary_key=True, index=True)
+    disease_id = Column(Integer, ForeignKey("disease.disease_id"))
+    snp_id = Column(Integer, ForeignKey("snp.snp_id"))
+
