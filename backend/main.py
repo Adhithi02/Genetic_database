@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from database import SessionLocal, genetic_inputs_collection
-from models import Patient, Prediction, Disease, SNP
+from models import Patient, Prediction, Disease, SNP, DiseaseSNP
 from ml import FEATURE_COLUMNS, load_latest_model, predict_risk
 import uvicorn
 import pandas as pd
@@ -46,17 +46,35 @@ def _ensure_model_loaded():
     return _model_cache
 
 
-def _build_patient_feature_vector(session, snps: list[SNPInput], model_metadata: dict) -> list[float]:
+def _build_patient_feature_vector(
+    session,
+    snps: list[SNPInput],
+    disease_id: int | None = None,
+) -> list[float]:
     """
     Build patient feature vector by aggregating their SNPs.
-    Uses weighted average based on odds_ratio to emphasize high-risk SNPs.
+    Filters SNPs to those linked with the disease (if mappings exist) and then
+    uses a weighted average based on odds_ratio to emphasize high-risk SNPs.
     """
     odds_vals, freq_vals, chrom_vals, pos_vals = [], [], [], []
     matched_snps = 0
+    allowed_snp_ids: set[int] | None = None
+
+    if disease_id is not None:
+        allowed_snp_ids = {
+            row.snp_id for row in session.query(DiseaseSNP.snp_id).filter(DiseaseSNP.disease_id == disease_id)
+        }
+        if not allowed_snp_ids:
+            print(
+                f"[DEBUG] No disease-specific SNP mappings found for disease_id={disease_id}; "
+                "patient SNPs will be ignored."
+            )
 
     for snp in snps:
         record = session.query(SNP).filter(SNP.rsid == snp.rsid).first()
         if not record:
+            continue
+        if allowed_snp_ids is not None and record.snp_id not in allowed_snp_ids:
             continue
         matched_snps += 1
         odds_vals.append(record.odds_ratio or 1.0)
@@ -93,7 +111,10 @@ def _build_patient_feature_vector(session, snps: list[SNPInput], model_metadata:
         _weighted_avg(pos_vals, weights, 0.0),
     ]
     
-    print(f"[DEBUG] Matched {matched_snps}/{len(snps)} SNPs, features: {features}")
+    print(
+        f"[DEBUG] Matched {matched_snps}/{len(snps)} SNPs "
+        f"({'disease-filtered' if disease_id else 'all'}) -> features: {features}"
+    )
     return features
 
 
@@ -134,7 +155,13 @@ def predict(data: PredictRequest):
         session.add(patient)
         session.commit()
 
-        features = _build_patient_feature_vector(session, data.snps, cache["metadata"])
+        disease = session.query(Disease).filter(Disease.name == data.disease_name).first()
+        if not disease:
+            disease = Disease(name=data.disease_name, description="")
+            session.add(disease)
+            session.commit()
+
+        features = _build_patient_feature_vector(session, data.snps, disease_id=disease.disease_id)
         feature_payload = dict(zip(FEATURE_COLUMNS, features))
 
         doc = {
@@ -148,12 +175,6 @@ def predict(data: PredictRequest):
         genetic_inputs_collection.insert_one(doc)
 
         proba = predict_risk(cache["model"], features)
-
-        disease = session.query(Disease).filter(Disease.name == data.disease_name).first()
-        if not disease:
-            disease = Disease(name=data.disease_name, description="")
-            session.add(disease)
-            session.commit()
 
         prediction = Prediction(
             patient_id=patient.patient_id,
