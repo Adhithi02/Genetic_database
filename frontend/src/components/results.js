@@ -7,6 +7,7 @@ function Results({ result }) {
       <p>Patient ID: {result.patient_id}</p>
       <p>Disease: {result.disease}</p>
       <p>Risk Probability: {(result.risk_probability * 100).toFixed(2)}%</p>
+      {result.model_id && <p>Model ID: {result.model_id}</p>}
     </div>
   );
 }

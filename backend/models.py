@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
@@ -13,7 +13,7 @@ class Patient(Base):
 class Gene(Base):
     __tablename__ = "gene"
     gene_id = Column(Integer, primary_key=True, index=True)
-    gene_name = Column(String(50), unique=True)
+    gene_name = Column(String, unique=True)
     description = Column(String)
 
 class SNP(Base):
@@ -21,10 +21,13 @@ class SNP(Base):
     snp_id = Column(Integer, primary_key=True, index=True)
     rsid = Column(String(20), unique=True)
     gene_id = Column(Integer, ForeignKey("gene.gene_id"))
-    chromosome = Column(String(5))
+    chromosome = Column(Integer)
     position = Column(Integer)
     risk_allele = Column(String(1))
     odds_ratio = Column(Float)
+    risk_allele_freq = Column(Float)
+    p_value = Column(Float)
+    is_significant = Column(Boolean, default=False)
 
 class PatientSNP(Base):
     __tablename__ = "patient_snp"
