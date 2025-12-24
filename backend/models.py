@@ -29,13 +29,6 @@ class SNP(Base):
     p_value = Column(Float)
     is_significant = Column(Boolean, default=False)
 
-class PatientSNP(Base):
-    __tablename__ = "patient_snp"
-    id = Column(Integer, primary_key=True, index=True)
-    patient_id = Column(Integer, ForeignKey("patient.patient_id"))
-    snp_id = Column(Integer, ForeignKey("snp.snp_id"))
-    patient_allele = Column(String(1))
-
 class Disease(Base):
     __tablename__ = "disease"
     disease_id = Column(Integer, primary_key=True, index=True)

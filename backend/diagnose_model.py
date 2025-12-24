@@ -6,12 +6,15 @@ import pandas as pd
 from database import engine
 from ml import load_latest_model, FEATURE_COLUMNS, predict_risk
 import numpy as np
+from sklearn.pipeline import Pipeline
+
+from sklearn.pipeline import Pipeline
 
 def diagnose_model():
     print("=" * 60)
     print("MODEL DIAGNOSTICS")
     print("=" * 60)
-    
+
     # Load model
     try:
         model, metadata = load_latest_model()
@@ -22,19 +25,30 @@ def diagnose_model():
     except Exception as e:
         print(f"\n✗ Failed to load model: {e}")
         return
-    
-    # Check model parameters
+
+    # Unwrap final estimator if Pipeline
     print(f"\n[Model Parameters]")
-    print(f"  Classes: {model.classes_}")
-    print(f"  Intercept: {model.intercept_}")
-    print(f"  Coefficients shape: {model.coef_.shape}")
-    print(f"  Coefficients:\n{model.coef_}")
-    
-    # Check if model is learning (non-zero coefficients)
-    if np.allclose(model.coef_, 0):
+
+    if isinstance(model, Pipeline):
+        # More robust: fall back to last step if 'logreg' not present
+        if "logreg" in model.named_steps:
+            logreg = model.named_steps["logreg"]
+        else:
+            logreg = list(model.named_steps.values())[-1]
+    else:
+        logreg = model
+
+    print(f"  Classes: {logreg.classes_}")
+    print(f"  Intercept: {logreg.intercept_}")
+    print(f"  Coefficients shape: {logreg.coef_.shape}")
+    print(f"  Coefficients:\n{logreg.coef_}")
+
+    # Use logreg here, not model
+    if np.allclose(logreg.coef_, 0):
         print("\n⚠ WARNING: All coefficients are near zero - model is not learning!")
     else:
         print("\n✓ Model has non-zero coefficients")
+
     
     # Load training data statistics
     print(f"\n[Training Data Statistics]")

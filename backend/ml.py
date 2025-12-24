@@ -1,11 +1,15 @@
 import pickle
 from datetime import datetime
-from typing import Tuple
+from typing import Tuple, Optional
 
+import numpy as np  
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sqlalchemy.orm import Session
 
-from database import metadata_collection, engine
+from database import metadata_collection, engine  # keep your real imports
 
 FEATURE_COLUMNS = ["odds_ratio", "risk_allele_freq", "chromosome", "position"]
 
@@ -17,14 +21,14 @@ def _coerce_numeric(series: pd.Series, default: float) -> pd.Series:
 
 
 def build_training_matrix(train_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series]:
-    """Return X/y matrices using the agreed upon feature set."""
-    print("\n[DEBUG] Raw training_df head:")
-    print(train_df.head())
-    print("[DEBUG] Raw training_df dtypes:")
-    print(train_df.dtypes)
-
     df = train_df.copy()
+
     df["odds_ratio"] = _coerce_numeric(df.get("odds_ratio", 1.0), 1.0)
+    # Clip extreme OR values
+    df["odds_ratio"] = df["odds_ratio"].clip(lower=0.01, upper=20.0)
+    # Optional: log-transform
+    df["odds_ratio"] = np.log(df["odds_ratio"])
+
     df["risk_allele_freq"] = _coerce_numeric(df.get("risk_allele_freq", 0.0), 0.0)
     df["chromosome"] = _coerce_numeric(df.get("chromosome", 0.0), 0.0)
     df["position"] = _coerce_numeric(df.get("position", 0.0), 0.0)
@@ -32,19 +36,13 @@ def build_training_matrix(train_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Seri
     if "is_significant" not in df.columns:
         raise ValueError("Training dataframe must include 'is_significant' column.")
 
-    print("\n[DEBUG] After coercion head:")
-    print(df[FEATURE_COLUMNS + ["is_significant"]].head())
-    print("[DEBUG] After coercion describe():")
-    print(df[FEATURE_COLUMNS].describe())
-    print("[DEBUG] is_significant value_counts():")
-    print(df["is_significant"].value_counts(dropna=False))
-
     X = df[FEATURE_COLUMNS].astype(float)
     y = df["is_significant"].astype(int)
 
-    print("\n[DEBUG] X dtypes:", X.dtypes.to_dict())
-    print("[DEBUG] y unique values:", y.unique())
-    print("[DEBUG] First 10 y:", y.head(10).tolist())
+    # Final NaN guard
+    if X.isna().any().any():
+        print("[DEBUG] NaNs found in X, imputing with medians")
+        X = X.fillna(X.median(numeric_only=True))
 
     return X, y
 
@@ -66,32 +64,39 @@ def fetch_training_data_from_sql() -> Tuple[pd.DataFrame, pd.Series]:
         raise RuntimeError(f"Failed to load training data from database: {e}") from e
 
 
-def train_logistic_regression(X: pd.DataFrame, y: pd.Series) -> LogisticRegression:
-    # Check class balance
+def train_logistic_regression(X: pd.DataFrame, y: pd.Series) -> Pipeline:
     class_counts = y.value_counts()
-    print(f"\n[DEBUG] Training class distribution:")
+    print("\n[DEBUG] Training class distribution:")
     print(class_counts)
-    print(f"[DEBUG] Class balance ratio: {class_counts.get(1, 0) / len(y):.3f} positive")
-    
-    # Use class_weight='balanced' if classes are imbalanced
+
     if len(class_counts) == 2:
         min_class_ratio = min(class_counts) / len(y)
-        if min_class_ratio < 0.1:  # If minority class is < 10%
+        if min_class_ratio < 0.1:
             print("[DEBUG] Using balanced class weights due to imbalance")
-            model = LogisticRegression(max_iter=1000, class_weight='balanced')
+            base_model = LogisticRegression(
+                max_iter=1000,
+                class_weight="balanced",
+                solver="lbfgs",
+            )
         else:
-            model = LogisticRegression(max_iter=1000)
+            base_model = LogisticRegression(max_iter=1000, solver="lbfgs")
     else:
-        print(f"[WARNING] Only {len(class_counts)} unique class(es) found - model may not learn properly")
-        model = LogisticRegression(max_iter=1000)
-    
+        print("[WARNING] Only one class found; model may not learn properly")
+        base_model = LogisticRegression(max_iter=1000, solver="lbfgs")
+
+    model = Pipeline(
+        steps=[
+            ("scaler", StandardScaler()),
+            ("logreg", base_model),
+        ]
+    )
+
     model.fit(X, y)
 
-    print("\n[DEBUG] Model classes_:", model.classes_)
-    print("[DEBUG] Model intercept_:", model.intercept_)
-    print("[DEBUG] Model coef_:", model.coef_)
+    logreg = model.named_steps["logreg"]
+    print("\n[DEBUG] Model intercept_:", logreg.intercept_)
+    print("[DEBUG] Model coef_:", logreg.coef_)
 
-    # Show probabilities on first 10 training rows
     proba_train = model.predict_proba(X.iloc[:10])
     print("\n[DEBUG] predict_proba on first 10 training rows:")
     for i, (row, p) in enumerate(zip(X.iloc[:10].values, proba_train)):
@@ -105,7 +110,12 @@ def save_model_metadata(
     feature_names,
     training_rows: int,
     notes: dict | None = None,
+    disease_id: Optional[int] = None,
 ) -> str:
+    """
+    Save model metadata to MongoDB.
+    If disease_id is provided, saves as disease-specific model.
+    """
     payload = {
         "model": pickle.dumps(model),
         "feature_names": list(feature_names),
@@ -113,6 +123,8 @@ def save_model_metadata(
         "created_at": datetime.utcnow(),
         "notes": notes or {},
     }
+    if disease_id is not None:
+        payload["disease_id"] = disease_id
     result = metadata_collection.insert_one(payload)
     return str(result.inserted_id)
 
@@ -125,46 +137,55 @@ def load_latest_model() -> Tuple[LogisticRegression, dict]:
     return model, doc
 
 
-def predict_risk(model: LogisticRegression, patient_features: list[float]) -> float:
+def load_disease_model(disease_id: int) -> Tuple[Pipeline, dict]:
     """
-    Predict risk probability for a patient.
-    patient_features should be [odds_ratio, risk_allele_freq, chromosome, position]
+    Load the latest disease-specific model from MongoDB.
     """
+    doc = metadata_collection.find_one(
+        {"disease_id": disease_id},
+        sort=[("created_at", -1)]
+    )
+    if not doc:
+        raise RuntimeError(f"No trained model found for disease_id={disease_id}.")
+    model = pickle.loads(doc["model"])
+    return model, doc
+
+
+def predict_risk(model, patient_features: list[float]) -> float:
     import numpy as np
-    
-    # Debug: show incoming features and the resulting probability vector
+
     print("\n[DEBUG] predict_risk called with patient_features:", patient_features)
-    
-    # Ensure features are in correct format
+
     if len(patient_features) != len(FEATURE_COLUMNS):
         raise ValueError(f"Expected {len(FEATURE_COLUMNS)} features, got {len(patient_features)}")
-    
-    # Convert to numpy array and reshape for sklearn
-    features_array = np.array(patient_features).reshape(1, -1)
-    
-    # Get prediction probabilities
-    proba_vec = model.predict_proba(features_array)[0]
+
+    features_array = np.array(patient_features, dtype=float).reshape(1, -1)
+
+    # Support both bare estimators and pipelines with a "logreg" step
+    estimator = model
+    classes = getattr(model, "classes_", None)
+    if hasattr(model, "named_steps"):
+        if "logreg" in model.named_steps:
+            estimator = model.named_steps["logreg"]
+            classes = getattr(estimator, "classes_", classes)
+
+    proba_vec = estimator.predict_proba(features_array)[0]
     print("[DEBUG] Full predict_proba output:", proba_vec)
-    print("[DEBUG] Model classes:", model.classes_)
-    
-    # Find index of class 1 (significant/positive class)
-    if len(proba_vec) == 2:
-        # Binary classification: [prob_class_0, prob_class_1]
-        proba = proba_vec[1] if model.classes_[1] == 1 else proba_vec[0]
+    print("[DEBUG] Model classes:", classes)
+
+    if classes is None:
+        # Fallback: assume binary ordering [0, 1] if no classes_ present
+        proba = proba_vec[-1] if len(proba_vec) >= 2 else float(proba_vec[0])
+    elif len(proba_vec) == 2:
+        proba = proba_vec[1] if classes[1] == 1 else proba_vec[0]
     else:
-        # Multi-class or edge case
-        class_1_idx = np.where(model.classes_ == 1)[0]
-        if len(class_1_idx) > 0:
-            proba = proba_vec[class_1_idx[0]]
-        else:
-            # Fallback: use max probability
-            proba = np.max(proba_vec)
-    
+        class_1_idx = np.where(classes == 1)[0]
+        proba = proba_vec[class_1_idx[0]] if len(class_1_idx) > 0 else np.max(proba_vec)
+
     print("[DEBUG] Returning risk (class=1 prob):", proba)
     return float(proba)
 
 
-# Optional quick test block (run only when executing this file directly)
 if __name__ == "__main__":
     X, y = fetch_training_data_from_sql()
     model = train_logistic_regression(X, y)
