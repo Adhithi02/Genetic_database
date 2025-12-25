@@ -1,15 +1,34 @@
-import React from "react";
-import InputForm from "./components/inputForm";
-import Results from "./components/results";
+import React, { useState } from "react";
+import "./App.css";
+import "./styles/Navigation.css";
+import Home from "./components/Home";
+import RiskPredictor from "./pages/RiskPredictor";
+import GlossaryPage from "./pages/GlossaryPage";
+import BlogPage from "./pages/BlogPage";
 
 function App() {
-  const [result, setResult] = React.useState(null);
+  const [currentPage, setCurrentPage] = useState("home");
+
+  const navigate = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "predictor":
+        return <RiskPredictor onNavigate={navigate} />;
+      case "glossary":
+        return <GlossaryPage onNavigate={navigate} />;
+      case "blog":
+        return <BlogPage onNavigate={navigate} />;
+      default:
+        return <Home onNavigate={navigate} />;
+    }
+  };
 
   return (
-    <div style={{ margin: "20px" }}>
-      <h1>Genetic Disease Risk Predictor</h1>
-      <InputForm setResult={setResult} />
-      {result && <Results result={result} />}
+    <div className="app-wrapper">
+      {renderPage()}
     </div>
   );
 }

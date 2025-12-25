@@ -1,0 +1,110 @@
+.term-highlight {
+  background: rgba(59, 130, 246, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: help;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  color: #93c5fd;
+  text-decoration: none;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  font-size: inherit;
+  position: relative;
+  z-index: 10;
+}
+
+.term-highlight:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.term-tooltip {
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  max-width: 360px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: tooltipFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+
+.term-tooltip.dbms {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.term-tooltip.genetics {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.tooltip-icon {
+  display: none;
+}
+
+.tooltip-header strong {
+  color: #f8fafc;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tooltip-meaning {
+  color: #cbd5e1;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.tooltip-relevance {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #94a3b8;
+  border-left: 3px solid rgba(59, 130, 246, 0.5);
+}
+
+.tooltip-relevance strong {
+  color: #e2e8f0;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}

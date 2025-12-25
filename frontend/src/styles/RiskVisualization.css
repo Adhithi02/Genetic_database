@@ -1,0 +1,168 @@
+.risk-visualization {
+  height: 100%;
+}
+
+.gauge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+  margin-bottom: 30px;
+}
+
+.gauge-chart {
+  width: 220px;
+  height: 220px;
+}
+
+.gauge-progress {
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.gauge-percentage {
+  font-size: 2.5rem;
+  font-weight: 700;
+  fill: #f8fafc;
+  letter-spacing: -0.02em;
+}
+
+.gauge-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  fill: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.risk-indicator {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.risk-level-badge {
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px solid;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.risk-level-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.risk-bar-chart {
+  margin-bottom: 30px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bar-chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.bar-chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bar-chart-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-chart-label {
+  min-width: 70px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  text-align: right;
+}
+
+.bar-chart-bar-wrapper {
+  flex: 1;
+  position: relative;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bar-chart-bar {
+  height: 100%;
+  border-radius: 8px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  border: 2px solid;
+}
+
+.bar-chart-bar.active {
+  box-shadow: 0 0 20px currentColor;
+}
+
+.bar-chart-marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 40px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 8px currentColor;
+  z-index: 10;
+}
+
+.bar-chart-range {
+  min-width: 80px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-align: left;
+  font-weight: 500;
+}
+
+.prediction-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f8fafc;
+  letter-spacing: -0.01em;
+}
+

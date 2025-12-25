@@ -1,0 +1,97 @@
+.sql-viewer {
+  margin-top: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
+}
+
+.sql-header {
+  background: rgba(59, 130, 246, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #e2e8f0;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.sql-icon {
+  display: none;
+}
+
+.sql-header strong {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sql-code {
+  background: #0f172a;
+  padding: 24px;
+  overflow-x: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sql-code pre {
+  margin: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.sql-code code {
+  display: block;
+  white-space: pre;
+}
+
+.sql-keyword {
+  color: #60a5fa;
+  font-weight: 600;
+  cursor: help;
+}
+
+.sql-string {
+  color: #fbbf24;
+}
+
+.sql-parameter {
+  color: #34d399;
+  font-style: italic;
+}
+
+.sql-explanation {
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.sql-explanation strong {
+  display: block;
+  margin-bottom: 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.sql-explanation ul {
+  margin: 10px 0 0 20px;
+  padding: 0;
+}
+
+.sql-explanation li {
+  margin-bottom: 8px;
+  list-style-type: disc;
+  color: #94a3b8;
+}
