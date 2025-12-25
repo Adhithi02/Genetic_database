@@ -1,0 +1,489 @@
+.blog-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.blog-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 0;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.blog-section.collapsible {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blog-section.collapsible.expanded {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.section-header {
+  padding: 24px 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.section-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0;
+  letter-spacing: -0.02em;
+  border: none;
+  padding: 0;
+}
+
+.expand-icon {
+  font-size: 2rem;
+  color: #3b82f6;
+  font-weight: 300;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.blog-section.expanded .expand-icon {
+  transform: rotate(180deg);
+}
+
+.section-content {
+  padding: 40px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.blog-section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+  padding-bottom: 12px;
+}
+
+.blog-section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.blog-section h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.blog-section p {
+  color: #cbd5e1;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+.blog-section ul, .blog-section ol {
+  color: #cbd5e1;
+  line-height: 1.8;
+  margin-left: 24px;
+  margin-bottom: 16px;
+}
+
+.blog-section li {
+  margin-bottom: 8px;
+}
+
+.blog-section strong {
+  color: #f8fafc;
+  font-weight: 600;
+}
+
+/* Table of Contents */
+.toc-section {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.toc-list {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+.toc-list li {
+  margin-bottom: 12px;
+}
+
+.toc-list a {
+  color: #93c5fd;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.toc-list a:hover {
+  color: #3b82f6;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Info Box */
+.info-box {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.info-box h3 {
+  margin-top: 0;
+  color: #93c5fd;
+}
+
+/* ER Diagram */
+.er-diagram-container {
+  text-align: center;
+  margin: 32px 0;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.er-diagram {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.diagram-caption {
+  margin-top: 16px;
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* Schema Tables */
+.schema-table {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.schema-table h4 {
+  color: #60a5fa;
+  margin-top: 0;
+  font-size: 1.3rem;
+}
+
+.schema-table pre {
+  background: #0f172a;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 16px 0;
+}
+
+.schema-table code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+}
+
+.schema-table p {
+  margin: 12px 0;
+}
+
+.schema-table ul {
+  margin-left: 20px;
+}
+
+/* Relationships */
+.relationships {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.relationship-item {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  color: #86efac;
+}
+
+/* Architecture Diagram */
+.architecture-diagram {
+  margin: 32px 0;
+}
+
+.arch-layer {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 16px 0;
+}
+
+.arch-layer h3 {
+  color: #3b82f6;
+  margin-top: 0;
+}
+
+.arch-layer ul {
+  margin: 12px 0 0 0;
+  list-style: none;
+  padding-left: 0;
+}
+
+.arch-layer li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.arch-layer li:last-child {
+  border-bottom: none;
+}
+
+.arch-arrow {
+  text-align: center;
+  font-size: 2rem;
+  color: #3b82f6;
+  margin: 8px 0;
+}
+
+.arch-databases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.arch-db {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.arch-db strong {
+  color: #93c5fd;
+  display: block;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.arch-db ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* Code Examples */
+.code-example {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px 0;
+}
+
+.code-example h4 {
+  color: #60a5fa;
+  margin-top: 0;
+}
+
+.code-example pre {
+  background: #0f172a;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 16px 0;
+}
+
+.code-example code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', monospace;
+  font-size: 0.85rem;
+  color: #e2e8f0 !important;
+  line-height: 1.6;
+  display: block;
+  white-space: pre;
+}
+
+.code-example code .sql-keyword {
+  color: #60a5fa !important;
+}
+
+.code-example code .sql-string {
+  color: #fbbf24 !important;
+}
+
+.code-example code .sql-parameter {
+  color: #34d399 !important;
+}
+
+/* Workflow Steps */
+.workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+.workflow-step {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.workflow-step h4 {
+  color: #93c5fd;
+  margin-top: 0;
+}
+
+.workflow-step pre {
+  background: #0f172a;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+/* Workflow Example */
+.workflow-example {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 16px;
+  padding: 32px;
+  margin: 32px 0;
+}
+
+.workflow-example h3 {
+  color: #86efac;
+  margin-top: 0;
+}
+
+.example-step {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.example-step h4 {
+  color: #cbd5e1;
+  margin-top: 0;
+}
+
+.example-step ul {
+  margin: 12px 0;
+}
+
+.example-step pre {
+  background: #0f172a;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+/* Data Flow */
+.data-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0;
+}
+
+.flow-item {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  color: #e2e8f0;
+  font-size: 1.05rem;
+}
+
+.flow-arrow {
+  font-size: 2rem;
+  color: #3b82f6;
+  margin: 8px 0;
+}
+
+/* Conclusion */
+.conclusion {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.conclusion h2 {
+  border-bottom-color: rgba(139, 92, 246, 0.5);
+}
+
+@media (max-width: 768px) {
+  .blog-section {
+    padding: 24px;
+  }
+
+  .arch-databases {
+    grid-template-columns: 1fr;
+  }
+
+  .relationships {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-section h2 {
+    font-size: 1.5rem;
+  }
+}
+
