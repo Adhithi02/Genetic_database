@@ -417,6 +417,7 @@ def vulnerability_profile(data: VulnerabilityRequest):
             "risk_probability": round(proba, 4),
             "risk_level": "High" if proba > 0.7 else "Moderate" if proba > 0.4 else "Low",
             "matched_snps": len(matched_df),
+            "cross_disease_snps": len(cross_df)
         })
 
     # Sort by risk

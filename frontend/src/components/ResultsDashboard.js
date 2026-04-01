@@ -361,6 +361,11 @@ export default function ResultsDashboard({ data, onNavigate }) {
         pdf.setFont('helvetica', 'bold');
         pdf.text(v.disease, margin, y + 3);
         pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(8);
+        const matchLabel = v.matched_snps > 0 ? `${v.matched_snps} direct matches` : `${v.cross_disease_snps || 0} cross-triggers`;
+        pdf.setTextColor(107, 101, 96);
+        pdf.text(matchLabel, margin + pdf.getTextWidth(v.disease) + 4, y + 3);
+        pdf.setTextColor(28, 25, 23);
         y += 7;
         // Track
         pdf.setFillColor(240, 237, 232);
@@ -946,8 +951,12 @@ export default function ResultsDashboard({ data, onNavigate }) {
                     {(v.risk_probability * 100).toFixed(1)}%
                   </div>
                   <span className={`badge ${getBadgeClass(v.risk_level)}`}>{v.risk_level}</span>
-                  <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginTop: 6 }} className="data-text">
-                    {v.matched_snps} SNPs matched
+                  <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginTop: 8, lineHeight: 1.4 }} className="data-text">
+                    {v.matched_snps > 0 ? (
+                      <span><strong>{v.matched_snps}</strong> direct disease matches</span>
+                    ) : (
+                      <span><strong>{v.cross_disease_snps || 0}</strong> cross-pathway triggers</span>
+                    )}
                   </div>
                 </div>
               ))}
