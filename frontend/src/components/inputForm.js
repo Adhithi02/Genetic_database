@@ -27,21 +27,43 @@ function InputForm({ setResult }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/predict/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          patient: { name, age: Number(age), gender },
-          disease_name: disease,
-          snps,
-        }),
-      });
+      const payload = {
+        patient_name: name,
+        age: Number(age),
+        gender,
+        disease_name: disease,
+        snps: snps.map(s => ({ rsid: s.rsid, allele: s.allele || "" })),
+      };
 
-      const data = await response.json();
-      setResult(data);
+      const [predResponse, networkResponse] = await Promise.all([
+        fetch("http://localhost:8000/predict/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }),
+        fetch("http://localhost:8000/network/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            disease_name: disease,
+            snps: snps.map(s => ({ rsid: s.rsid, allele: s.allele || "" }))
+          }),
+        })
+      ]);
+
+      if (!predResponse.ok) throw new Error("Prediction API failed");
+      if (!networkResponse.ok) throw new Error("Network API failed");
+
+      const predData = await predResponse.json();
+      const networkData = await networkResponse.json();
+
+      setResult({
+        prediction: predData,
+        network: networkData
+      });
     } catch (error) {
-      console.error("Prediction error:", error);
-      alert("Failed to get prediction. Please check if the backend is running.");
+      console.error("API error:", error);
+      alert("Failed to get analysis. Please check if the backend is running.");
     } finally {
       setLoading(false);
     }
@@ -145,7 +167,7 @@ function InputForm({ setResult }) {
       </div>
 
       <button type="submit" className="btn submit-btn" disabled={loading}>
-        {loading ? "Predicting..." : "Predict Risk"}
+        {loading ? "Analyzing Genome..." : "Predict Risk"}
       </button>
     </form>
   );

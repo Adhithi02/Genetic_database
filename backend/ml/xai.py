@@ -8,8 +8,9 @@ import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
 
-MODELS_DIR = "models"
-GWAS_FILE = "../../cleaned_gwas.csv"
+_THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+MODELS_DIR = os.path.join(_THIS_DIR, "models")
+GWAS_FILE = os.path.join(_THIS_DIR, "..", "..", "cleaned_gwas.csv")
 FEATURE_COLUMNS = ["odds_ratio", "risk_allele_freq", "chromosome", "position"]
 
 def load_local_model(disease_name: str):

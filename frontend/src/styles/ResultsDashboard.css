@@ -1,0 +1,468 @@
+/* ═══════════════════════════════════════
+   Results Dashboard
+   ═══════════════════════════════════════ */
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--paper);
+  border-right: var(--border);
+  padding: 24px 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sidebar .back-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.sidebar .back-link:hover { color: var(--blue-ink); }
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 20px;
+  flex: 1;
+}
+
+.sidebar-nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.sidebar-nav-item:hover {
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.sidebar-nav-item.active {
+  color: var(--blue-ink);
+  background: var(--blue-mist);
+  border-left-color: var(--blue-ink);
+  font-weight: 500;
+}
+
+/* ── Content ── */
+.dashboard-content {
+  margin-left: 240px;
+  flex: 1;
+  padding: 40px 48px 80px;
+  max-width: 900px;
+}
+
+.dash-section {
+  margin-bottom: 64px;
+  scroll-margin-top: 24px;
+}
+
+.dash-section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+
+/* ── Overview ── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.7fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.overview-arc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.arc-pills {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.overview-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-card {
+  padding: 16px 20px;
+}
+
+.overview-tier-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.overview-tier-card.high-bg { background: var(--copper-light); }
+.overview-tier-card.moderate-bg { background: var(--amber-light); }
+.overview-tier-card.low-bg { background: var(--moss-light); }
+
+.tier-label {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* ── Narrative ── */
+.narrative-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+}
+
+.narrative-header {
+  background: var(--blue-ink);
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.narrative-badge {
+  font-size: 11px;
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.narrative-body {
+  background: var(--paper);
+  padding: 24px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+.narrative-footer {
+  background: var(--blue-mist);
+  padding: 10px 20px;
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+
+/* ── Explainer Card ── */
+.explainer-card {
+  padding: 20px 24px;
+}
+
+.explainer-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.explainer-card p {
+  font-size: 14px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+/* ── SNP Rankings ── */
+.top-rank {
+  border-left: 3px solid var(--copper);
+}
+
+.chr-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  background: var(--cream);
+  border-radius: 4px;
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--ink-muted);
+}
+
+.risk-bar-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.risk-bar-track {
+  width: 80px;
+  height: 6px;
+  background: #f0ede8;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+/* ── Pathway Cards ── */
+.pathway-card {
+  margin-bottom: 12px;
+  padding: 20px 24px;
+}
+
+.pathway-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.pathway-genes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ── Km Scale ── */
+.km-scale-card {
+  padding: 16px 24px;
+  margin-bottom: 8px;
+}
+
+.km-scale {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: var(--font-data);
+  font-size: 11px;
+  text-align: center;
+}
+
+.km-band {
+  flex: 1;
+  padding: 10px 8px;
+}
+
+.km-band small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+.km-critical { background: var(--copper-light); color: var(--copper); }
+.km-elevated { background: var(--amber-light); color: var(--amber); }
+.km-nominal { background: var(--cream); color: var(--ink-muted); }
+
+/* ── Network ── */
+.network-card {
+  padding: 8px;
+  overflow: hidden;
+}
+
+.network-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ── Cross-Disease ── */
+.cross-disease-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.radar-card {
+  padding: 16px;
+}
+
+.cross-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cross-card {
+  padding: 16px 20px;
+  text-align: center;
+}
+
+/* ── Network Actions ── */
+.network-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-top: var(--divider);
+  margin-top: 4px;
+}
+
+/* ── Collapsible Network Detail ── */
+.network-detail-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.network-detail-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+  transition: background 0.12s;
+}
+
+.network-detail-toggle:hover {
+  background: var(--cream);
+}
+
+.toggle-arrow {
+  font-size: 14px;
+  color: var(--ink-muted);
+  transition: transform 0.25s ease;
+}
+
+.toggle-arrow.open {
+  transform: rotate(180deg);
+}
+
+.network-detail-body {
+  padding: 0 24px 24px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section h4 {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  margin-bottom: 8px;
+}
+
+.detail-section p {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.detail-item .legend-dot {
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+.detail-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.detail-section ul li {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.detail-section ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+  .dashboard-content { margin-left: 0; padding: 24px; }
+  .overview-grid { grid-template-columns: 1fr; }
+  .cross-disease-layout { grid-template-columns: 1fr; }
+}

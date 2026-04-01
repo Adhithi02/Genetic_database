@@ -1,0 +1,178 @@
+/* ═══════════════════════════════════════
+   SNP Input Page
+   ═══════════════════════════════════════ */
+
+.input-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 60px 24px 80px;
+  overflow: hidden;
+}
+
+.input-page-inner {
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+  z-index: 1;
+}
+
+.back-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 32px;
+  display: inline-block;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--blue-ink);
+}
+
+.input-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.input-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink-muted);
+  margin-bottom: 36px;
+  font-weight: 300;
+}
+
+/* ── Disease Pills ── */
+.disease-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.disease-pill {
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--ink-faint);
+  background: var(--cream);
+  color: var(--ink-muted);
+}
+
+.disease-pill.active {
+  background: var(--blue-ink);
+  color: #fff;
+  border-color: var(--blue-ink);
+}
+
+.disease-pill:hover:not(.active) {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* ── Textarea ── */
+.snp-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 16px;
+  font-family: var(--font-data);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink-faint);
+  border-radius: 12px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s;
+  line-height: 1.8;
+}
+
+.snp-textarea:focus {
+  border-color: var(--blue-ink);
+}
+
+.snp-textarea::placeholder {
+  color: var(--ink-faint);
+}
+
+/* ── Counter ── */
+.snp-counter {
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin-top: 12px;
+}
+
+.counter-num {
+  color: var(--blue-ink);
+  font-weight: 500;
+}
+
+/* ── Presets ── */
+.presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--blue-ink);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.preset-btn:hover {
+  color: var(--copper);
+}
+
+/* ── Error ── */
+.error-msg {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--copper-light);
+  color: var(--copper);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+
+/* ── Submit ── */
+.submit-btn {
+  margin-top: 28px;
+  width: 100%;
+  height: 52px;
+  font-size: 15px;
+}
+
+/* ── Spinner ── */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

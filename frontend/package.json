@@ -1,11 +1,15 @@
 {
-  "name": "genetic-risk-frontend",
+  "name": "generisk-intelligence",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1"
+    "react-force-graph-2d": "^1.29.1",
+    "react-scripts": "5.0.1",
+    "recharts": "^3.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

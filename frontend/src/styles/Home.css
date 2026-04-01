@@ -1,131 +1,177 @@
-.home-container {
-  min-height: 80vh;
+/* ═══════════════════════════════════════
+   Home / Landing Page
+   ═══════════════════════════════════════ */
+
+.home {
+  min-height: 100vh;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 65vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-}
-
-.home-header {
-  text-align: center;
-  margin-bottom: 60px;
-  max-width: 800px;
-}
-
-.home-header h1 {
-  font-size: 3rem;
-  font-weight: 600;
-  margin-bottom: 16px;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.home-header p {
-  font-size: 1.25rem;
-  color: #cbd5e1;
-  font-weight: 300;
-  letter-spacing: 0.01em;
-}
-
-.home-buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
-  width: 100%;
-  max-width: 1200px;
-}
-
-.home-button {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 40px;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  position: relative;
+  padding: 80px 40px 60px;
   overflow: hidden;
 }
 
-.home-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.home-button:hover {
-  transform: translateY(-8px);
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
-}
-
-.home-button:hover::before {
-  opacity: 1;
-}
-
-.home-button:active {
-  transform: translateY(-4px);
-}
-
-.button-content {
+.hero-content {
   position: relative;
   z-index: 1;
+  text-align: center;
+  max-width: 640px;
 }
 
-.button-content h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #f8fafc;
-  margin-bottom: 12px;
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.wordmark-name {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--ink);
   letter-spacing: -0.01em;
 }
 
-.button-content p {
-  font-size: 1rem;
-  color: #cbd5e1;
+.wordmark-sep {
+  color: var(--ink-faint);
+  font-weight: 200;
+  font-size: 24px;
+}
+
+.wordmark-label {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--ink-muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto 36px;
+}
+
+.hero-cta {
+  margin-bottom: 28px;
+  font-size: 15px;
+  height: 52px;
+  padding: 0 32px;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.stat-sep {
+  color: var(--ink-faint);
+  font-size: 14px;
+}
+
+/* ── Disease Section ── */
+.disease-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 40px 80px;
+}
+
+.disease-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.disease-card {
+  cursor: pointer;
+  position: relative;
+  padding: 28px 28px 24px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.disease-card:hover {
+  border-left-color: var(--copper);
+  transform: translateY(-2px);
+}
+
+.disease-card-icon {
+  margin-bottom: 12px;
+}
+
+.disease-card-name {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.disease-card-desc {
+  font-size: 13px;
+  color: var(--ink-muted);
   line-height: 1.6;
-  margin: 0;
+  margin-bottom: 16px;
 }
 
-.home-button.risk-predictor:hover {
-  border-color: rgba(59, 130, 246, 0.5);
+.disease-card-pills {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
-.home-button.glossary:hover {
-  border-color: rgba(139, 92, 246, 0.5);
+.disease-card-link {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--blue-ink);
+  font-weight: 500;
 }
 
-.home-button.blog:hover {
-  border-color: rgba(34, 197, 94, 0.5);
+.disease-card-link span {
+  transition: transform 0.15s ease;
+  display: inline-block;
 }
 
+.disease-card:hover .disease-card-link span {
+  transform: translateX(3px);
+}
+
+/* ── Responsive ── */
 @media (max-width: 768px) {
-  .home-header h1 {
-    font-size: 2rem;
+  .hero-title {
+    font-size: 36px;
   }
-
-  .home-buttons {
+  .disease-grid {
     grid-template-columns: 1fr;
   }
-
-  .home-button {
-    padding: 30px;
-  }
 }
-
