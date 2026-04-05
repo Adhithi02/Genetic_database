@@ -17,8 +17,8 @@ from prs import calculate_prs
 from intelligence import per_snp_analysis, pathway_enrichment, interpret_kinetics, generate_clinical_narrative
 
 app = FastAPI(
-    title="AI-Assisted Genomic Analysis API",
-    description="Precision medicine platform for multi-disease genomic risk prediction with biological interpretation.",
+    title="AI-Based Multi-Disease Genomic Risk Prediction and Pathway Vulnerability Analysis API",
+    description="A formal precision medicine platform utilizing ensemble machine learning and functional biological pathway enrichment for multi-disease genomic risk prediction.",
     version="2.0"
 )
 
